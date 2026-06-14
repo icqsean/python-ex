@@ -1,0 +1,11 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch11\\員工資料_drop.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT * FROM [員工$] 
+WHERE 年齡 IS NOT NULL;
+''' Timeout: 30 Result=> QueryResult
+Database.Close Connection: SQLConnection
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: Excel_File_Path Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+Excel.DeleteCells.DeleteCells Instance: ExcelInstance StartColumn: $'''A''' StartRow: 2 EndColumn: FirstFreeColumn - 1 EndRow: FirstFreeRow - 1 ShiftCellsDirection: Excel.ShiftCellsDirection.Up
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: QueryResult Column: $'''A''' Row: 2
+Excel.CloseExcel.CloseAndSave Instance: ExcelInstance

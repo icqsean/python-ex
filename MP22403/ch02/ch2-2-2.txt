@@ -1,0 +1,8 @@
+SET CSVString TO $'''SQL資料庫,80,76,56'''
+Text.SplitText.SplitWithDelimiter Text: CSVString CustomDelimiter: $''',''' IsRegEx: False Result=> TextList
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch02\\學員成績資料3.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+LOOP FOREACH CurrentItem IN TextList
+    Excel.GetFirstFreeRowOnColumn Instance: ExcelInstance Column: $'''D''' FirstFreeRowOnColumn=> FirstFreeRowOnColumn
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: CurrentItem Column: $'''D''' Row: FirstFreeRowOnColumn
+END
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''D:\\ExcelSQL\\ch02\\學員成績資料4.xlsx'''

@@ -1,0 +1,5 @@
+fp = open("temp\\note.txt", "w")
+fp.write("陳會安\n")
+fp.write("Python")
+fp.write("程式設計\n")
+fp.close()

@@ -1,0 +1,3 @@
+SET SourcePath TO $'''D:\\ExcelSQL\\ch03\\test'''
+File.Copy Files: $'''%SourcePath%\\stock.xlsx''' Destination: $'''%SourcePath%\\Output''' IfFileExists: File.IfExists.Overwrite CopiedFiles=> CopiedFiles
+File.Delete Files: $'''%SourcePath%\\stock.xlsx'''

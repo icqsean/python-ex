@@ -1,0 +1,5 @@
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch02\\學員成績資料.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+File.ReadFromCSVFile.ReadCSV CSVFile: $'''D:\\ExcelSQL\\ch02\\學員成績資料.csv''' Encoding: File.CSVEncoding.UTF8 TrimFields: True FirstLineContainsColumnNames: False ColumnsSeparator: File.CSVColumnsSeparator.SystemDefault CSVTable=> CSVTable
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: CSVTable Column: $'''A''' Row: 1
+Excel.SaveExcel.SaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''D:\\ExcelSQL\\ch02\\學員成績資料2.xlsx'''
+Excel.CloseExcel.Close Instance: ExcelInstance

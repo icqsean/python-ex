@@ -1,0 +1,11 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch12\\選課資料.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 課程編號, COUNT(*) AS 學生數
+FROM [班級$]
+GROUP BY 課程編號;
+''' Timeout: 30 Result=> QueryResult
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 性別, COUNT(*) AS 學生數
+FROM [學生$]
+GROUP BY 性別;
+''' Timeout: 30 Result=> QueryResult2
+Database.Close Connection: SQLConnection

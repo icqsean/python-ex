@@ -1,0 +1,17 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch10\\銷售系統.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 姓名 
+FROM [員工$]
+UNION
+SELECT 姓名 
+FROM [Excel 12.0;DATABASE=D:\\ExcelSQL\\ch10\\學生.xlsx].[學生$];
+
+''' Timeout: 30 Result=> QueryResult
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 姓名 
+FROM [員工$]
+UNION ALL
+SELECT 姓名 
+FROM [Excel 12.0;DATABASE=D:\\ExcelSQL\\ch10\\學生.xlsx].[學生$];
+
+''' Timeout: 30 Result=> QueryResult2
+Database.Close Connection: SQLConnection

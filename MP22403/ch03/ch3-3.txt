@@ -1,0 +1,13 @@
+Folder.GetFiles Folder: $'''D:\\ExcelSQL\\ch03\\test2''' FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+LOOP FOREACH CurrentItem IN Files
+    File.GetPathPart File: CurrentItem RootPath=> RootPath Directory=> Directory FileName=> FileName FileNameWithoutExtension=> FileNameNoExtension Extension=> FileExtension
+    Text.ChangeCase Text: FileExtension NewCase: Text.CaseOption.UpperCase Result=> TextWithNewCase
+    IF TextWithNewCase = $'''.CSV''' THEN
+        File.RenameFiles.RenameAddDateOrTime Files: CurrentItem DateTimeToAdd: File.DateTimeToAdd.Current DateTimePosition: File.AddTextPosition.AfterName DateTimeSeparator: File.Separator.Space DateTimeFormat: $'''yyyyMMdd''' IfFileExists: File.IfExists.DoNothing RenamedFiles=> RenamedFiles
+        File.Move Files: RenamedFiles[0] Destination: $'''%Directory.FullName%\\CSV''' IfFileExists: File.IfExists.Overwrite MovedFiles=> MovedFiles
+    END
+    IF TextWithNewCase = $'''.XLSX''' THEN
+        File.RenameFiles.RenameAddDateOrTime Files: CurrentItem DateTimeToAdd: File.DateTimeToAdd.Current DateTimePosition: File.AddTextPosition.AfterName DateTimeSeparator: File.Separator.Space DateTimeFormat: $'''yyyyMMdd''' IfFileExists: File.IfExists.DoNothing RenamedFiles=> RenamedFiles
+        File.Move Files: RenamedFiles[0] Destination: $'''%Directory.FullName%\\XLSX''' IfFileExists: File.IfExists.Overwrite MovedFiles=> MovedFiles
+    END
+END

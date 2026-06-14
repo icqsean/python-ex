@@ -1,0 +1,7 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch12\\文具商品採購清單.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 分類, 項目, SUM(金額) AS 合計金額
+FROM [全公司$]
+GROUP BY 分類, 項目;
+''' Timeout: 30 Result=> QueryResult
+Database.Close Connection: SQLConnection

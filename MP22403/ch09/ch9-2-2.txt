@@ -1,0 +1,22 @@
+File.Copy Files: $'''D:\\ExcelSQL\\ch08\\銷售系統.xlsx''' Destination: $'''D:\\ExcelSQL\\ch09\\''' IfFileExists: File.IfExists.Overwrite CopiedFiles=> CopiedFiles
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch09\\銷售系統.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch09\\研發部.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance2
+Excel.ReadFromExcel.ReadAllCells Instance: ExcelInstance2 ReadAsText: False FirstLineIsHeader: False RangeValue=> ExcelData
+Excel.CloseExcel.Close Instance: ExcelInstance2
+Excel.AddWorksheet Instance: ExcelInstance Name: $'''員工2''' WorksheetPosition: Excel.WorksheetPosition.Last
+Excel.SetActiveWorksheet.ActivateWorksheetByName Instance: ExcelInstance Name: $'''員工2'''
+Excel.WriteToExcel.Write Instance: ExcelInstance Value: ExcelData
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''D:\\ExcelSQL\\ch09\\銷售系統2.xlsx'''
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch09\\銷售系統2.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''INSERT INTO [員工$] 
+SELECT 編號 AS 員工編號,
+       姓名, 性別, 
+       DATEDIFF(\'yyyy\', 生日, Date()) AS 年齡,
+       部門, 職稱, 薪水, 
+       100 AS 分機, 
+       [城市] & \'市\' & [街道] AS 住家地址,
+       電話 AS 住家電話
+FROM [員工2$];
+''' Timeout: 30 Result=> QueryResult
+Database.Close Connection: SQLConnection

@@ -1,0 +1,1 @@
+請將SQL指令改寫成SQLite的版本，資料表名稱是shoes。

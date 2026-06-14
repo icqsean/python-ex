@@ -1,0 +1,15 @@
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch11\\鐵達尼號.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''D:\\ExcelSQL\\ch11\\鐵達尼號2.xlsx'''
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch11\\鐵達尼號2.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT COUNT(*) AS 遺漏值數 FROM [鐵達尼號$] 
+WHERE Age = \"None\";
+''' Timeout: 30 Result=> QueryResult
+Display.ShowMessageDialog.ShowMessage Title: $'''顯示遺漏值數''' Message: $'''遺漏值數 = %QueryResult[0]['遺漏值數']%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT Round(AVG(Age)) AS 平均值 FROM [鐵達尼號$] 
+WHERE Age <> \"None\";''' Timeout: 30 Result=> QueryResult2
+SET Average TO QueryResult2[0]['平均值']
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''UPDATE [鐵達尼號$] SET Age=%Average%
+WHERE Age=\'None\';
+''' Timeout: 30 Result=> QueryResult3
+Database.Close Connection: SQLConnection

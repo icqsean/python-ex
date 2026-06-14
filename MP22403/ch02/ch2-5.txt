@@ -1,0 +1,12 @@
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch02\\第一季業績資料.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.ReadFromExcel.ReadAllCells Instance: ExcelInstance ReadAsText: False FirstLineIsHeader: True RangeValue=> ExcelData
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''業績總和''' Column: $'''E''' Row: 1
+Excel.ActivateCellInExcel.ActivateCell Instance: ExcelInstance Column: $'''E''' Row: 1
+LOOP FOREACH CurrentItem IN ExcelData
+    Excel.ActivateCellInExcel.ActivateCellRelativeTo Instance: ExcelInstance Direction: Excel.TwoDimensionalDirection.Below OffsetFromActiveCell: 1
+    Text.ToNumber Text: CurrentItem['網路商店'] Number=> Item1
+    Text.ToNumber Text: CurrentItem['實體店面'] Number=> Item2
+    Text.ToNumber Text: CurrentItem['業務直銷'] Number=> Item3
+    Excel.WriteToExcel.Write Instance: ExcelInstance Value: Item1 + Item2 + Item3
+END
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''D:\\ExcelSQL\\ch02\\第一季業績資料2.xlsx'''

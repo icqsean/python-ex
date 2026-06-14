@@ -1,0 +1,15 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch08\\銷售系統.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 產品編號, 產品名稱, 產品說明, 定價
+FROM [產品$]
+WHERE 產品名稱 LIKE \'%%64%%\'
+  AND 產品說明 LIKE \'%%6.1%%\'
+  OR 定價 > 15000;
+''' Timeout: 30 Result=> QueryResult
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 產品編號, 產品名稱, 產品說明, 定價
+FROM [產品$]
+WHERE 產品名稱 LIKE \'%%64%%\'
+  AND (產品說明 LIKE \'%%6.1%%\'
+       OR 定價 > 15000);
+''' Timeout: 30 Result=> QueryResult2
+Database.Close Connection: SQLConnection

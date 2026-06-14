@@ -1,0 +1,43 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch12\\文具商品採購清單.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 
+    部門,
+    SUM(IIF(分類=\'書寫用品\' AND 
+            項目=\'原子筆(紅)\', 數量, 0)) 
+            AS 書寫用品_原子筆紅,
+    SUM(IIF(分類=\'書寫用品\' AND
+            項目=\'原子筆(藍)\', 數量, 0))
+            AS 書寫用品_原子筆藍,
+    SUM(IIF(分類=\'書寫用品\' AND
+            項目=\'原子筆(黑)\', 數量, 0))
+            AS 書寫用品_原子筆黑,
+    SUM(IIF(分類=\'紙類用品\' AND
+            項目=\'便利貼\', 數量, 0))
+            AS 紙類用品_便利貼,
+    SUM(IIF(分類=\'紙類用品\' AND 
+            項目=\'信封\', 數量, 0))
+            AS 紙類用品_信封,
+    SUM(IIF(分類=\'紙類用品\' AND
+            項目=\'筆記本\', 數量, 0))
+            AS 紙類用品_筆記本,
+    SUM(IIF(分類=\'辦公用品\' AND
+            項目=\'剪刀\', 數量, 0))
+            AS 辦公用品_剪刀,
+    SUM(IIF(分類=\'辦公用品\' AND
+            項目=\'美工刀\', 數量, 0))
+            AS 辦公用品_美工刀,
+    SUM(IIF(分類=\'辦公用品\' AND
+            項目=\'釘書機\', 數量, 0))
+            AS 釘書機
+FROM [全公司$]
+GROUP BY 部門;
+''' Timeout: 30 Result=> QueryResult
+Database.Close Connection: SQLConnection
+SET ColumnIdx TO 1
+Excel.LaunchExcel.LaunchUnderExistingProcess Visible: True Instance=> ExcelInstance
+LOOP FOREACH CurrentItem IN QueryResult.Columns
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: CurrentItem Column: ColumnIdx Row: 1
+    Variables.IncreaseVariable Value: ColumnIdx IncrementValue: 1
+END
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: QueryResult Column: $'''A''' Row: 2
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''D:\\ExcelSQL\\ch12\\文具商品採購清單樞紐分析表5.xlsx'''

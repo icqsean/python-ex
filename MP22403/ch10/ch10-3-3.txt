@@ -1,0 +1,13 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch10\\選課資料.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 學生.學號, 學生.姓名, 班級.課程編號
+FROM [學生$] AS 學生
+LEFT JOIN [班級$] AS 班級
+ON 學生.學號 = 班級.學號;
+''' Timeout: 30 Result=> QueryResult
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 學生.學號, 學生.姓名, 班級.課程編號
+FROM [學生$] AS 學生
+RIGHT JOIN [班級$] AS 班級
+ON 學生.學號 = 班級.學號;
+''' Timeout: 30 Result=> QueryResult2
+Database.Close Connection: SQLConnection

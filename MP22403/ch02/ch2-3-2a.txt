@@ -1,0 +1,3 @@
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch02\\學員成績資料4.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.ReadFromExcel.ReadAllCells Instance: ExcelInstance ReadAsText: False FirstLineIsHeader: False RangeValue=> ExcelData
+Excel.CloseExcel.Close Instance: ExcelInstance

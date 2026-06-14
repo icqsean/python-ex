@@ -1,0 +1,16 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch07\\業績資料.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT * FROM [業績2$]''' Timeout: 30 Result=> QueryResult
+Database.Close Connection: SQLConnection
+Excel.LaunchExcel.LaunchUnderExistingProcess Visible: True Instance=> ExcelInstance
+Excel.WriteToExcel.Write Instance: ExcelInstance Value: QueryResult.ColumnHeadersRow
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: QueryResult Column: $'''A''' Row: 2
+Excel.GetFirstFreeRowOnColumn Instance: ExcelInstance Column: $'''A''' FirstFreeRowOnColumn=> FirstFreeRowOnColumn
+LOOP LoopIndex FROM 2 TO FirstFreeRowOnColumn - 1 STEP 1
+    Excel.ReadFromExcel.ReadCell Instance: ExcelInstance StartColumn: $'''A''' StartRow: LoopIndex ReadAsText: False CellValue=> ExcelData
+    Text.ConvertDateTimeToText.FromDateTime DateTime: ExcelData StandardFormat: Text.WellKnownDateTimeFormat.ShortDate Result=> FormattedDateTime
+    Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: FormattedDateTime Column: $'''A''' Row: LoopIndex
+END
+Excel.CloseExcel.CloseAndSave Instance: ExcelInstance
+File.Move Files: $'''C:\\Users\\hueya\\Documents\\活頁簿1.xlsx''' Destination: $'''D:\\ExcelSQL\\ch07''' IfFileExists: File.IfExists.Overwrite MovedFiles=> MovedFiles
+File.RenameFiles.Rename Files: $'''D:\\ExcelSQL\\ch07\\活頁簿1.xlsx''' NewName: $'''D:\\ExcelSQL\\ch07\\業績3.xlsx''' KeepExtension: False IfFileExists: File.IfExists.Overwrite RenamedFiles=> RenamedFiles

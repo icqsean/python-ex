@@ -1,0 +1,4 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch07\\圖書資料.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT * FROM [圖書資料$A1:C5]''' Timeout: 30 Result=> QueryResult
+Database.Close Connection: SQLConnection

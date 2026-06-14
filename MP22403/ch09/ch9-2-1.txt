@@ -1,0 +1,9 @@
+File.Copy Files: $'''D:\\ExcelSQL\\ch08\\銷售系統.xlsx''' Destination: $'''D:\\ExcelSQL\\ch09\\''' IfFileExists: File.IfExists.Overwrite CopiedFiles=> CopiedFiles
+SET Excel_File_Path TO CopiedFiles[0]
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''INSERT INTO [產品$] (產品編號, 產品名稱, 產品說明,
+                     定價, 入庫日期, 庫存量, 安全庫存)
+VALUES (\'P016\', \'iPhone 13-128GB\', \'福利品\', 15300,
+         #2023/11/3#, 20, 2);
+''' Timeout: 30 Result=> QueryResult
+Database.Close Connection: SQLConnection

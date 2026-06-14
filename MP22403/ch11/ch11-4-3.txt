@@ -1,0 +1,9 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch11\\鞋價格表.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT *, REPLACE(性別, \'not specified\', \'male\') AS 修改後的性別
+FROM [尺寸分類$];
+''' Timeout: 30 Result=> QueryResult
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT *, UCase(性別) AS 大寫性別
+FROM [尺寸分類$];
+''' Timeout: 30 Result=> QueryResult2
+Database.Close Connection: SQLConnection

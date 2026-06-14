@@ -1,0 +1,5 @@
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch02\\學員成績資料4.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: 75 Column: $'''B''' Row: 4
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: 60 Column: $'''C''' Row: 4
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: 82 Column: $'''C''' Row: 2
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''D:\\ExcelSQL\\ch02\\學員成績資料5.xlsx'''

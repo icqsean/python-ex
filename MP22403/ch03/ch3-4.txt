@@ -1,0 +1,8 @@
+Web.DownloadFromWeb.DownloadToFile Url: $'''https://query1.finance.yahoo.com/v7/finance/download/2330.TW?period1=1667907893&period2=1699443893&interval=1d&events=history&includeAdjustedClose=true''' FilePath: $'''D:\\ExcelSQL\\ch03\\2330TW.csv''' ConnectionTimeout: 30 FollowRedirection: True ClearCookies: False UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False DownloadedFile=> DownloadedFile
+WAIT (File.WaitForFile.Created File: $'''D:\\ExcelSQL\\ch03\\2330TW.csv''')
+File.ReadFromCSVFile.ReadCSV CSVFile: $'''D:\\ExcelSQL\\ch03\\2330TW.csv''' Encoding: File.CSVEncoding.UTF8 TrimFields: True FirstLineContainsColumnNames: False ColumnsSeparator: File.CSVColumnsSeparator.SystemDefault CSVTable=> CSVTable
+Excel.LaunchExcel.LaunchUnderExistingProcess Visible: True Instance=> ExcelInstance
+Excel.WriteToExcel.Write Instance: ExcelInstance Value: CSVTable
+Excel.CloseExcel.CloseAndSave Instance: ExcelInstance
+File.Move Files: $'''C:\\Users\\hueya\\Documents\\活頁簿1.xlsx''' Destination: $'''D:\\ExcelSQL\\ch03''' IfFileExists: File.IfExists.Overwrite MovedFiles=> MovedFiles
+File.RenameFiles.Rename Files: $'''D:\\ExcelSQL\\ch03\\活頁簿1.xlsx''' NewName: $'''D:\\ExcelSQL\\ch03\\2330TW.xlsx''' KeepExtension: False IfFileExists: File.IfExists.Overwrite RenamedFiles=> RenamedFiles

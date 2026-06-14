@@ -1,0 +1,11 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch09\\研發部.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 編號, 姓名, 職稱,
+    [城市] & \'市\' & [街道] AS 員工地址
+FROM [員工$];
+''' Timeout: 30 Result=> QueryResult
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 編號, 姓名, 職稱,
+    REPLACE(電話, \"-\", \" \") AS 住家電話
+FROM [員工$];
+''' Timeout: 30 Result=> QueryResult2
+Database.Close Connection: SQLConnection

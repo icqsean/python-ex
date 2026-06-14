@@ -1,0 +1,20 @@
+File.Copy Files: $'''D:\\ExcelSQL\\ch09\\文具用品採購\\文具商品採購清單.xlsx''' Destination: $'''D:\\ExcelSQL\\ch09\\''' IfFileExists: File.IfExists.Overwrite CopiedFiles=> CopiedFiles
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch09\\文具商品採購清單.xlsx'''
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: Excel_File_Path Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.GetAllWorksheets Instance: ExcelInstance Worksheets=> SheetNames
+Excel.AddWorksheet Instance: ExcelInstance Name: $'''全公司''' WorksheetPosition: Excel.WorksheetPosition.Last
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''部門''' Column: $'''A''' Row: 1
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''分類''' Column: $'''B''' Row: 1
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''項目''' Column: $'''C''' Row: 1
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''數量''' Column: $'''D''' Row: 1
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''金額''' Column: $'''E''' Row: 1
+Excel.CloseExcel.CloseAndSave Instance: ExcelInstance
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+LOOP FOREACH CurrentItem IN SheetNames
+    Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''INSERT INTO [全公司$] 
+SELECT \'%CurrentItem%\' AS 部門,
+       分類, 項目, 數量, 
+       單價 * 數量 AS 金額
+FROM [%CurrentItem%$];''' Timeout: 30 Result=> QueryResult
+END
+Database.Close Connection: SQLConnection

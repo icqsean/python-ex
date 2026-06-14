@@ -1,0 +1,7 @@
+SET DelayTime TO 10
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+DateTime.Add DateTime: CurrentDateTime TimeToAdd: DelayTime TimeUnit: DateTime.TimeUnit.Seconds ResultedDate=> ResultedDate
+LOOP WHILE (CurrentDateTime) < (ResultedDate)
+    DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+    DateTime.Subtract FromDate: ResultedDate SubstractDate: CurrentDateTime TimeUnit: DateTime.DifferenceTimeUnit.Seconds TimeDifference=> TimeDifference
+END

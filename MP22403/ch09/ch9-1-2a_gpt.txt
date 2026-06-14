@@ -1,0 +1,1 @@
+請改用Access的SQL語言來改寫此SQL指令。

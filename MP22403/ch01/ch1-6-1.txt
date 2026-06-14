@@ -1,0 +1,4 @@
+Display.InputDialog Title: $'''輸入姓名''' Message: $'''請輸入姓名''' InputType: Display.InputType.SingleLine IsTopMost: False UserInput=> UserInput ButtonPressed=> ButtonPressed
+IF ButtonPressed = $'''OK''' THEN
+    Display.ShowMessageDialog.ShowMessage Title: $'''歡迎訊息''' Message: $'''歡迎使用者: %UserInput%''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed2
+END

@@ -1,0 +1,4 @@
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch02\\學員成績資料4.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.ReadFromExcel.ReadAllCells Instance: ExcelInstance ReadAsText: False FirstLineIsHeader: False RangeValue=> ExcelData
+Excel.CloseExcel.Close Instance: ExcelInstance
+File.WriteToCSVFile.WriteCSV VariableToWrite: ExcelData CSVFile: $'''D:\\ExcelSQL\\ch02\\學員成績資料4.csv''' CsvFileEncoding: File.CSVEncoding.UTF8 IncludeColumnNames: False IfFileExists: File.IfFileExists.Overwrite ColumnsSeparator: File.CSVColumnsSeparator.SystemDefault

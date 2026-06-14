@@ -1,0 +1,7 @@
+Variables.CreateNewList List=> List
+LOOP LoopIndex FROM 1 TO 10 STEP 2
+    Variables.AddItemToList Item: LoopIndex List: List
+END
+LOOP FOREACH CurrentItem IN List
+    Display.ShowMessageDialog.ShowMessage Title: $'''項目值''' Message: $'''項目值: %CurrentItem%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed
+END

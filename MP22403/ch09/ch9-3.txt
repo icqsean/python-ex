@@ -1,0 +1,7 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch09\\研發部2.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''UPDATE [員工$]
+SET 薪水 = 100000, 公積金 = 600
+WHERE 編號 = 20120002;
+''' Timeout: 30 Result=> QueryResult
+Database.Close Connection: SQLConnection

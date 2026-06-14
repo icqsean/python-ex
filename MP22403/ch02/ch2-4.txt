@@ -1,0 +1,8 @@
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''D:\\ExcelSQL\\ch02\\進修班成績管理.xlsx''' Visible: True ReadOnly: False Instance=> ExcelInstance
+Excel.RenameWorksheet.RenameWorksheetWithName Instance: ExcelInstance Name: $'''工作表1''' NewName: $'''A班'''
+Excel.DeleteWorksheet.DeleteWorksheetByIndex Instance: ExcelInstance Index: 2
+Excel.ReadFromExcel.ReadCells Instance: ExcelInstance StartColumn: $'''A''' StartRow: 1 EndColumn: $'''D''' EndRow: 2 ReadAsText: False FirstLineIsHeader: False RangeValue=> ExcelData
+Excel.AddWorksheet Instance: ExcelInstance Name: $'''B班''' WorksheetPosition: Excel.WorksheetPosition.Last
+Excel.SetActiveWorksheet.ActivateWorksheetByName Instance: ExcelInstance Name: $'''B班'''
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: ExcelData Column: $'''A''' Row: 1
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''D:\\ExcelSQL\\ch02\\進修班成績管理2.xlsx'''

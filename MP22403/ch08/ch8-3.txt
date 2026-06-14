@@ -1,0 +1,16 @@
+SET Excel_File_Path TO $'''D:\\ExcelSQL\\ch08\\銷售系統.xlsx'''
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 姓名, 薪水, 住家電話
+FROM [員工$]
+ORDER BY 薪水;
+
+''' Timeout: 30 Result=> QueryResult
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 姓名, 薪水, 住家電話
+FROM [員工$]
+ORDER BY 薪水 DESC;
+''' Timeout: 30 Result=> QueryResult2
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''SELECT 姓名, 薪水, 住家電話, 部門
+FROM [員工$]
+ORDER BY 部門, 薪水;
+''' Timeout: 30 Result=> QueryResult3
+Database.Close Connection: SQLConnection

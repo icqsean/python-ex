@@ -1,0 +1,17 @@
+File.Copy Files: $'''D:\\ExcelSQL\\ch11\\資料轉換\\鞋價格表.xlsx''' Destination: $'''D:\\ExcelSQL\\ch11\\''' IfFileExists: File.IfExists.Overwrite CopiedFiles=> CopiedFiles
+SET Excel_File_Path TO CopiedFiles[0]
+Database.Connect ConnectionString: $'''Provider=Microsoft.ACE.OLEDB.12.0;Data Source=%Excel_File_Path%;Extended Properties=\"Excel 12.0 Xml;HDR=YES\";''' Connection=> SQLConnection
+Database.ExecuteSqlStatement.Execute Connection: SQLConnection Statement: $'''UPDATE [尺寸分類$]
+SET 尺寸 = IIF(尺寸 = \'XXL\', 5,
+               IIF(尺寸 = \'XL\', 4,
+                   IIF(尺寸 = \'L\', 3,
+                       IIF(尺寸 = \'M\', 2,
+                           IIF(尺寸 = \'S\', 1,
+                               IIF(尺寸 = \'XS\', 0, 尺寸)
+                           )
+                       )
+                   )
+               )
+           );
+''' Timeout: 30 Result=> QueryResult
+Database.Close Connection: SQLConnection
